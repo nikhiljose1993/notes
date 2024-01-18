@@ -17,10 +17,8 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   final _form = GlobalKey<FormState>();
 
-  bool _isLogin = true;
-  var _enteredEmail = '';
-  var _enteredPassword = '';
-  bool _isPasswordHidden = true;
+  bool _isLogin = true, _isPasswordHidden = true, _isAuthenticating = false;
+  String _enteredEmail = '', _enteredPassword = '';
 
   void _submit() async {
     final isValid = _form.currentState!.validate();
@@ -33,6 +31,9 @@ class _AuthScreenState extends State<AuthScreen> {
     _form.currentState!.save();
 
     try {
+      setState(() {
+        _isAuthenticating = true;
+      });
       if (_isLogin) {
         await _firebase.signInWithEmailAndPassword(
             email: _enteredEmail, password: _enteredPassword);
@@ -41,6 +42,9 @@ class _AuthScreenState extends State<AuthScreen> {
             email: _enteredEmail, password: _enteredPassword);
       }
     } on FirebaseAuthException catch (err) {
+      setState(() {
+        _isAuthenticating = false;
+      });
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -166,32 +170,36 @@ class _AuthScreenState extends State<AuthScreen> {
                         const SizedBox(height: 16),
 
                         // Buttons
-                        ElevatedButton(
-                          onPressed: _submit,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                theme.colorScheme.onSecondaryContainer,
-                            foregroundColor:
-                                theme.colorScheme.secondaryContainer,
+                        if (_isAuthenticating)
+                          const CircularProgressIndicator(),
+                        if (!_isAuthenticating)
+                          ElevatedButton(
+                            onPressed: _submit,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  theme.colorScheme.onSecondaryContainer,
+                              foregroundColor:
+                                  theme.colorScheme.secondaryContainer,
+                            ),
+                            child: Text(_isLogin ? 'Login' : 'Signup'),
                           ),
-                          child: Text(_isLogin ? 'Login' : 'Signup'),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            setState(() {
-                              _isLogin = !_isLogin;
-                            });
-                            _form.currentState!.reset();
-                            FocusScope.of(context).unfocus();
-                          },
-                          // style: TextButton.styleFrom(
-                          //   foregroundColor:
-                          //       theme.colorScheme.secondaryContainer,
-                          // ),
-                          child: Text(_isLogin
-                              ? 'Create an account'
-                              : 'I already have an account'),
-                        )
+                        if (!_isAuthenticating)
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                _isLogin = !_isLogin;
+                              });
+                              _form.currentState!.reset();
+                              FocusScope.of(context).unfocus();
+                            },
+                            // style: TextButton.styleFrom(
+                            //   foregroundColor:
+                            //       theme.colorScheme.secondaryContainer,
+                            // ),
+                            child: Text(_isLogin
+                                ? 'Create an account'
+                                : 'I already have an account'),
+                          )
                       ],
                     ),
                   ),
