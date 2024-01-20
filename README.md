@@ -37,6 +37,13 @@ To get started with the Notes Flutter app, follow these steps:
     ```
     flutter run
     ```
+
+**Note:**
+   This repo will not contain these files you will have to configure FireBase with your account for yourself
+   
+   - `ios/Runner/GoogleService-Info.plist`
+   - `lib/firebase_options.dart`
+
 ## Screenshots
 <span><img src="https://github.com/nikhiljose1993/notes-flutter/assets/102947552/6b9ff8ae-4d62-43ee-950f-2ebd989ef4b0" alt="Login Screen" width="250"/>
 <img src="https://github.com/nikhiljose1993/notes-flutter/assets/102947552/cb725404-0e6d-48d0-b2e3-fea422f9b7f7" alt="Notes Screen Staggered Grid View" width="250"/>
