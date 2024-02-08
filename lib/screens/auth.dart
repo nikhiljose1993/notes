@@ -16,9 +16,10 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   final _form = GlobalKey<FormState>();
+  final _passwordController = TextEditingController();
 
   bool _isLogin = true, _isPasswordHidden = true, _isAuthenticating = false;
-  String _enteredEmail = '', _enteredPassword = '';
+  String _enteredName = '', _enteredEmail = '', _enteredPassword = '';
 
   void _submit() async {
     final isValid = _form.currentState!.validate();
@@ -35,11 +36,13 @@ class _AuthScreenState extends State<AuthScreen> {
         _isAuthenticating = true;
       });
       if (_isLogin) {
-        await _firebase.signInWithEmailAndPassword(
+        _firebase.signInWithEmailAndPassword(
             email: _enteredEmail, password: _enteredPassword);
       } else {
         await _firebase.createUserWithEmailAndPassword(
             email: _enteredEmail, password: _enteredPassword);
+        print(_enteredName);
+        _firebase.currentUser!.updateDisplayName(_enteredName);
       }
     } on FirebaseAuthException catch (err) {
       setState(() {
@@ -90,6 +93,34 @@ class _AuthScreenState extends State<AuthScreen> {
                     key: _form,
                     child: Column(
                       children: [
+                        // Name input
+                        if (!_isLogin)
+                          TextFormField(
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 10),
+                              labelText: 'Name',
+                              labelStyle: TextStyle(
+                                  color: theme.colorScheme.secondaryContainer),
+                              border: inputBorder,
+                              isDense: true,
+                            ),
+                            style:
+                                TextStyle(color: theme.colorScheme.background),
+                            keyboardType: TextInputType.name,
+                            textCapitalization: TextCapitalization.words,
+                            autocorrect: false,
+                            validator: (value) {
+                              return !_isLogin &&
+                                      (value == null || value.trim().length < 2)
+                                  ? 'Name should be more than two letters'
+                                  : null;
+                            },
+                            onSaved: (newValue) {
+                              _enteredName = newValue!;
+                            },
+                          ),
+                        if (!_isLogin) const SizedBox(height: 16),
                         // Email Input
                         TextFormField(
                           decoration: InputDecoration(
@@ -124,6 +155,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
                         // Password Input
                         TextFormField(
+                          controller: _passwordController,
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.symmetric(
                                 vertical: 10, horizontal: 10),
@@ -168,6 +200,48 @@ class _AuthScreenState extends State<AuthScreen> {
                           },
                         ),
                         const SizedBox(height: 16),
+                        // Confirm password
+                        if (!_isLogin)
+                          TextFormField(
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 10),
+                              labelText: 'Confirm password',
+                              labelStyle: TextStyle(
+                                  color: theme.colorScheme.secondaryContainer),
+                              border: inputBorder,
+                              isDense: true,
+                              suffixIcon: IconButton(
+                                icon: Icon(_isPasswordHidden
+                                    ? Icons.visibility_off
+                                    : Icons.visibility),
+                                onPressed: () {
+                                  setState(() {
+                                    _isPasswordHidden = !_isPasswordHidden;
+                                  });
+                                },
+                                iconSize: 20,
+                                padding: const EdgeInsets.only(right: 10),
+                                color: theme.colorScheme.secondaryContainer,
+                              ),
+                              suffixIconConstraints: const BoxConstraints(
+                                  maxHeight: 30, maxWidth: 40),
+                            ),
+                            style:
+                                TextStyle(color: theme.colorScheme.background),
+                            enableSuggestions: false,
+                            autocorrect: false,
+                            obscureText: _isPasswordHidden,
+                            validator: (value) {
+                              return !_isLogin &&
+                                      (value == null ||
+                                          _passwordController.text !=
+                                              value.trim())
+                                  ? 'Password doesn\'t match'
+                                  : null;
+                            },
+                          ),
+                        if (!_isLogin) const SizedBox(height: 16),
 
                         // Buttons
                         if (_isAuthenticating)

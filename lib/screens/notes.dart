@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import 'package:notes/screens/note.dart';
+import 'package:notes/widgets/drawer.dart';
 import 'package:notes/widgets/note.dart';
 
 final kUserId = FirebaseAuth.instance.currentUser!.uid;
@@ -25,6 +26,7 @@ class _NotesScreenState extends State<NotesScreen> {
 
     return Scaffold(
       backgroundColor: theme.colorScheme.secondary.withAlpha(120),
+      drawer: const DrawerWidget(),
       appBar: AppBar(
         foregroundColor: theme.colorScheme.background.withAlpha(180),
         title: const Text('Notes'),
@@ -38,12 +40,6 @@ class _NotesScreenState extends State<NotesScreen> {
             },
             icon: Icon(
                 _isGridView ? Icons.view_agenda_outlined : Icons.grid_view),
-          ),
-          IconButton(
-            onPressed: () {
-              FirebaseAuth.instance.signOut();
-            },
-            icon: const Icon(Icons.logout_outlined),
           ),
         ],
       ),
@@ -83,7 +79,7 @@ class _NotesScreenState extends State<NotesScreen> {
                   .toList();
 
               return _isGridView
-                  // Staggered grid view Builder not available not optimal lor large number of items
+                  // Staggered grid view Builder not available, using Staggered gridview count not optimal lor large number of items
                   ? SingleChildScrollView(
                       child: Container(
                         margin: const EdgeInsets.symmetric(horizontal: 8),
