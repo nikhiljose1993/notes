@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:notes/screens/change_password.dart';
 
 final _firebase = FirebaseAuth.instance;
 
@@ -15,6 +16,12 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   bool _isPasswordHidden = true;
   final TextEditingController _passwordController = TextEditingController();
   String _errMessage = '';
+
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +61,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       }
     }
 
-    void showDialoge() async {
+    void showDeleteDialoge() async {
       showDialog(
         context: context,
         builder: (context) {
@@ -164,19 +171,25 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               ),
             ),
           ),
-          // ListTile(
-          //   iconColor: theme.colorScheme.background,
-          //   textColor: theme.colorScheme.background,
-          //   leading: const Icon(Icons.change_circle_outlined),
-          //   title: const Text('Change password'),
-          //   onTap: () {},
-          // ),
+          ListTile(
+            iconColor: theme.colorScheme.background,
+            textColor: theme.colorScheme.background,
+            leading: const Icon(Icons.change_circle_outlined),
+            title: const Text('Change password'),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ChangePassword(),
+                  ));
+            },
+          ),
           ListTile(
             iconColor: theme.colorScheme.background,
             textColor: theme.colorScheme.background,
             leading: const Icon(Icons.delete_outline),
             title: const Text('Delete account'),
-            onTap: showDialoge,
+            onTap: showDeleteDialoge,
           ),
           ListTile(
             iconColor: theme.colorScheme.background,

@@ -18,7 +18,10 @@ class _AuthScreenState extends State<AuthScreen> {
   final _form = GlobalKey<FormState>();
   final _passwordController = TextEditingController();
 
-  bool _isLogin = true, _isPasswordHidden = true, _isAuthenticating = false;
+  bool _isLogin = true,
+      _isPasswordHidden = true,
+      _isConfirmPasswordHidden = true,
+      _isAuthenticating = false;
   String _enteredName = '', _enteredEmail = '', _enteredPassword = '';
 
   void _submit() async {
@@ -41,7 +44,6 @@ class _AuthScreenState extends State<AuthScreen> {
       } else {
         await _firebase.createUserWithEmailAndPassword(
             email: _enteredEmail, password: _enteredPassword);
-        print(_enteredName);
         _firebase.currentUser!.updateDisplayName(_enteredName);
       }
     } on FirebaseAuthException catch (err) {
@@ -55,6 +57,12 @@ class _AuthScreenState extends State<AuthScreen> {
         ),
       );
     }
+  }
+
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -212,12 +220,13 @@ class _AuthScreenState extends State<AuthScreen> {
                               border: inputBorder,
                               isDense: true,
                               suffixIcon: IconButton(
-                                icon: Icon(_isPasswordHidden
+                                icon: Icon(_isConfirmPasswordHidden
                                     ? Icons.visibility_off
                                     : Icons.visibility),
                                 onPressed: () {
                                   setState(() {
-                                    _isPasswordHidden = !_isPasswordHidden;
+                                    _isConfirmPasswordHidden =
+                                        !_isConfirmPasswordHidden;
                                   });
                                 },
                                 iconSize: 20,
@@ -231,7 +240,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 TextStyle(color: theme.colorScheme.background),
                             enableSuggestions: false,
                             autocorrect: false,
-                            obscureText: _isPasswordHidden,
+                            obscureText: _isConfirmPasswordHidden,
                             validator: (value) {
                               return !_isLogin &&
                                       (value == null ||
