@@ -172,18 +172,22 @@ class _AuthScreenState extends State<AuthScreen> {
                                 color: theme.colorScheme.secondaryContainer),
                             border: inputBorder,
                             isDense: true,
-                            suffixIcon: IconButton(
-                              icon: Icon(_isPasswordHidden
-                                  ? Icons.visibility_off
-                                  : Icons.visibility),
-                              onPressed: () {
-                                setState(() {
-                                  _isPasswordHidden = !_isPasswordHidden;
-                                });
-                              },
-                              iconSize: 20,
-                              padding: const EdgeInsets.only(right: 10),
-                              color: theme.colorScheme.secondaryContainer,
+                            suffixIcon: Container(
+                              margin: const EdgeInsets.only(right: 10),
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _isPasswordHidden = !_isPasswordHidden;
+                                  });
+                                },
+                                child: Icon(
+                                  _isPasswordHidden
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                  size: 20,
+                                  color: theme.colorScheme.secondaryContainer,
+                                ),
+                              ),
                             ),
                             suffixIconConstraints: const BoxConstraints(
                                 maxHeight: 30, maxWidth: 40),
@@ -219,19 +223,23 @@ class _AuthScreenState extends State<AuthScreen> {
                                   color: theme.colorScheme.secondaryContainer),
                               border: inputBorder,
                               isDense: true,
-                              suffixIcon: IconButton(
-                                icon: Icon(_isConfirmPasswordHidden
-                                    ? Icons.visibility_off
-                                    : Icons.visibility),
-                                onPressed: () {
-                                  setState(() {
-                                    _isConfirmPasswordHidden =
-                                        !_isConfirmPasswordHidden;
-                                  });
-                                },
-                                iconSize: 20,
-                                padding: const EdgeInsets.only(right: 10),
-                                color: theme.colorScheme.secondaryContainer,
+                              suffixIcon: Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _isConfirmPasswordHidden =
+                                          !_isConfirmPasswordHidden;
+                                    });
+                                  },
+                                  child: Icon(
+                                    _isConfirmPasswordHidden
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                    size: 20,
+                                    color: theme.colorScheme.secondaryContainer,
+                                  ),
+                                ),
                               ),
                               suffixIconConstraints: const BoxConstraints(
                                   maxHeight: 30, maxWidth: 40),
