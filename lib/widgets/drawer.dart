@@ -171,19 +171,19 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               ),
             ),
           ),
-          ListTile(
-            iconColor: theme.colorScheme.background,
-            textColor: theme.colorScheme.background,
-            leading: const Icon(Icons.change_circle_outlined),
-            title: const Text('Change password'),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ChangePassword(),
-                  ));
-            },
-          ),
+          // ListTile(
+          //   iconColor: theme.colorScheme.background,
+          //   textColor: theme.colorScheme.background,
+          //   leading: const Icon(Icons.change_circle_outlined),
+          //   title: const Text('Change password'),
+          //   onTap: () {
+          //     Navigator.push(
+          //         context,
+          //         MaterialPageRoute(
+          //           builder: (context) => const ChangePassword(),
+          //         ));
+          //   },
+          // ),
           ListTile(
             iconColor: theme.colorScheme.background,
             textColor: theme.colorScheme.background,
