@@ -92,19 +92,36 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         ),
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 10, horizontal: 10),
-                        suffixIcon: IconButton(
-                          icon: Icon(_isPasswordHidden
-                              ? Icons.visibility_off
-                              : Icons.visibility),
-                          onPressed: () {
-                            setState(() {
-                              _isPasswordHidden = !_isPasswordHidden;
-                            });
-                          },
-                          iconSize: 20,
-                          padding: const EdgeInsets.only(right: 10),
-                          color: theme.colorScheme.secondary.withAlpha(180),
+                        suffixIcon: Container(
+                          margin: const EdgeInsets.only(right: 10),
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _isPasswordHidden = !_isPasswordHidden;
+                              });
+                            },
+                            child: Icon(
+                              _isPasswordHidden
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              size: 20,
+                              color: theme.colorScheme.secondary.withAlpha(180),
+                            ),
+                          ),
                         ),
+                        //  IconButton(
+                        //   icon: Icon(_isPasswordHidden
+                        //       ? Icons.visibility_off
+                        //       : Icons.visibility),
+                        //   onPressed: () {
+                        //     setState(() {
+                        //       _isPasswordHidden = !_isPasswordHidden;
+                        //     });
+                        //   },
+                        //   iconSize: 20,
+                        //   padding: const EdgeInsets.only(right: 10),
+                        //   color: theme.colorScheme.secondary.withAlpha(180),
+                        // ),
                         suffixIconConstraints:
                             const BoxConstraints(maxHeight: 30, maxWidth: 40),
                       ),
