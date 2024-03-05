@@ -11,6 +11,7 @@ class NoteWidget extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(top: 8),
       child: InkWell(
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
         onTap: () {
           Navigator.push(
             context,
