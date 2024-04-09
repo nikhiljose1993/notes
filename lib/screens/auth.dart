@@ -279,8 +279,11 @@ class _AuthScreenState extends State<AuthScreen> {
                             onPressed: () {
                               setState(() {
                                 _isLogin = !_isLogin;
+                                _isPasswordHidden = true;
+                                _isConfirmPasswordHidden = true;
                               });
                               _form.currentState!.reset();
+                              _passwordController.clear();
                               FocusScope.of(context).unfocus();
                             },
                             // style: TextButton.styleFrom(
